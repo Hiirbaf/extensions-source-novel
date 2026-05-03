@@ -10,6 +10,7 @@ import okhttp3.Response
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
+import rx.Observable
 import java.net.URLEncoder
 
 class NOVA : ParsedHttpSource() {
@@ -25,8 +26,6 @@ class NOVA : ParsedHttpSource() {
         private const val ITEM_SELECTOR = "div.wf-cell"
         private val CHAPTER_REGEX = Regex("""(Parte \d+)[\s\-:.\–]+(.+?):\s*(.+)""")
     }
-
-    private fun GET(url: String) = Request.Builder().url(url).headers(headers).build()
 
     // --- HELPERS ---
     private fun Element.extractThumbnail(): String? =
