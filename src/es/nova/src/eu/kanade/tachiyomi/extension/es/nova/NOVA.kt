@@ -28,8 +28,7 @@ class NOVA : ParsedHttpSource() {
     }
 
     // --- HELPERS ---
-    private fun Element.extractThumbnail(): String? =
-        attr("data-src").takeIf { it.isNotBlank() } ?: attr("src")
+    private fun Element.extractThumbnail(): String? = attr("data-src").takeIf { it.isNotBlank() } ?: attr("src")
 
     private fun Document.detail(selector: String) = selectFirst(selector)?.text()?.takeIf { it.isNotBlank() }
 
@@ -44,10 +43,8 @@ class NOVA : ParsedHttpSource() {
     }
 
     // --- POPULAR / LATEST / SEARCH ---
-    override fun popularMangaRequest(page: Int) =
-        GET("$baseUrl/index.php/page/$page/?post_type=product&orderby=popularity")
-    override fun latestUpdatesRequest(page: Int) =
-        GET("$baseUrl/index.php/page/$page/?post_type=product&orderby=date")
+    override fun popularMangaRequest(page: Int) = GET("$baseUrl/index.php/page/$page/?post_type=product&orderby=popularity")
+    override fun latestUpdatesRequest(page: Int) = GET("$baseUrl/index.php/page/$page/?post_type=product&orderby=date")
     override fun searchMangaRequest(page: Int, query: String, filters: FilterList): Request {
         val q = URLEncoder.encode(query, "UTF-8")
         return GET("$baseUrl/index.php/page/$page/?s=$q&post_type=product&orderby=relevance")
@@ -120,14 +117,10 @@ class NOVA : ParsedHttpSource() {
     }
 
     // --- CHAPTER TEXT ---
-    override fun pageListParse(document: Document): List<Page> {
-        return listOf(Page(0, document.location()))
-    }
+    override fun pageListParse(document: Document): List<Page> listOf(Page(0, document.location()))
 
-    override fun fetchPageText(page: Page): Observable<String> {
-        return client.newCall(GET(page.url)).asObservableSuccess().map { response ->
-            pageTextParse(response)
-        }
+    override fun fetchPageText(page: Page): Observable<String> = client.newCall(GET(page.url)).asObservableSuccess().map { response ->
+        pageTextParse(response)
     }
 
     fun pageTextParse(response: Response): String {
