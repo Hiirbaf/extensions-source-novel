@@ -1,7 +1,6 @@
 package eu.kanade.tachiyomi.extension.es.nova
 
 import eu.kanade.tachiyomi.network.GET
-import eu.kanade.tachiyomi.network.asObservableSuccess
 import eu.kanade.tachiyomi.network.await
 import eu.kanade.tachiyomi.source.model.FilterList
 import eu.kanade.tachiyomi.source.model.Page
@@ -14,10 +13,11 @@ import okhttp3.Response
 import org.jsoup.Jsoup
 import org.jsoup.nodes.Document
 import org.jsoup.nodes.Element
-import rx.Observable
 import java.net.URLEncoder
 
-class NOVA : ParsedHttpSource(), NovelSource {
+class NOVA :
+    ParsedHttpSource(),
+    NovelSource {
 
     override val name = "NOVA"
     override val baseUrl = "https://novelasligeras.net"
