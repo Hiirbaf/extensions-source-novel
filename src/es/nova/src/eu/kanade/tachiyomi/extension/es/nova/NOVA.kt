@@ -2,6 +2,7 @@ package eu.kanade.tachiyomi.extension.es.nova
 
 import eu.kanade.tachiyomi.network.GET
 import eu.kanade.tachiyomi.network.asObservableSuccess
+import eu.kanade.tachiyomi.network.await
 import eu.kanade.tachiyomi.source.model.FilterList
 import eu.kanade.tachiyomi.source.model.Page
 import eu.kanade.tachiyomi.source.model.SChapter
@@ -16,7 +17,7 @@ import org.jsoup.nodes.Element
 import rx.Observable
 import java.net.URLEncoder
 
-class NOVA : ParsedHttpSource() {
+class NOVA : ParsedHttpSource(), NovelSource {
 
     override val name = "NOVA"
     override val baseUrl = "https://novelasligeras.net"
@@ -122,8 +123,9 @@ class NOVA : ParsedHttpSource() {
     // --- CHAPTER TEXT ---
     override fun pageListParse(document: Document): List<Page> = listOf(Page(0, document.location()))
 
-    override fun fetchPageText(page: Page): Observable<String> = client.newCall(GET(page.url)).asObservableSuccess().map { response ->
-        pageTextParse(response)
+    override suspend fun fetchPageText(page: Page): String {
+        val response = client.newCall(GET(page.url)).await()
+        return pageTextParse(response)
     }
 
     fun pageTextParse(response: Response): String {
