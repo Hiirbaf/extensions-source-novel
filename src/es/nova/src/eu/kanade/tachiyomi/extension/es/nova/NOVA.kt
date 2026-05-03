@@ -117,7 +117,7 @@ class NOVA : ParsedHttpSource() {
     }
 
     // --- CHAPTER TEXT ---
-    override fun pageListParse(document: Document): List<Page> listOf(Page(0, document.location()))
+    override fun pageListParse(document: Document): List<Page> = listOf(Page(0, document.location()))
 
     override fun fetchPageText(page: Page): Observable<String> = client.newCall(GET(page.url)).asObservableSuccess().map { response ->
         pageTextParse(response)
