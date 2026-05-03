@@ -51,7 +51,7 @@ jobs:
     name: Build extensions (${{ matrix.chunk.number }})
     needs: prepare
     runs-on: ubuntu-latest
-    timeout-minutes: 30
+    timeout-minutes: 60
     if: ${{ toJson(fromJson(needs.prepare.outputs.matrix).chunk) != '[]' }}
     strategy:
       matrix: ${{ fromJSON(needs.prepare.outputs.matrix) }}
@@ -60,6 +60,7 @@ jobs:
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
           persist-credentials: false
+          fetch-depth: 0
 
       - name: Set up Java
         uses: actions/setup-java@be666c2fcd27ec809703dec50e508c2fdc7f6654 # v5.2.0
@@ -86,8 +87,8 @@ jobs:
           ./gradlew $MODULES
 
       - name: Upload APKs (${{ matrix.chunk.number }})
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        if: "github.repository == 'hiirbaf/extensions'"
+        uses: actions/upload-artifact@bbbca2ddaa5d8feaa63e36b76fdaad77386f024f # v7.0.0
+        if: "github.repository == 'hiirbaf/extensions-source-novel'"
         with:
           name: "individual-apks-${{ matrix.chunk.number }}"
           path: "**/*.apk"
@@ -99,7 +100,7 @@ jobs:
   publish:
     name: Publish extension repo
     needs: [prepare, build]
-    if: "github.repository == 'keiyoushi/extensions-source'"
+    if: "github.repository == 'hiirbaf/extensions-source-novel'"
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -133,7 +134,7 @@ jobs:
       - name: Checkout repo branch
         uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
         with:
-          repository: keiyoushi/extensions
+          repository: hiirbaf/extensions
           token: ${{ secrets.BOT_PAT }}
           ref: repo
           path: repo
