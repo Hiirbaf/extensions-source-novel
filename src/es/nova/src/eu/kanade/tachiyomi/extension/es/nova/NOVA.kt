@@ -24,7 +24,7 @@ class NOVA :
     override val baseUrl = "https://novelasligeras.net"
     override val lang = "es"
     override val supportsLatest = true
-    val isNovelSource: Boolean = true
+    override val isNovelSource = true
 
     private companion object {
         private const val NEXT_PAGE_SELECTOR = "a.page-numbers.nav-next"
